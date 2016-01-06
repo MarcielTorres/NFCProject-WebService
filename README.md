@@ -2,8 +2,8 @@
 Esse repositório possui dois projetos desenvolvidos com o Visual Studio 2015, NFCProject.Webservice e NfcProject.WebClient.
 
 <h3>Controle de Presença utilizando Near Field Communication</h3>
-Esse projeto de pesquisa tem como objetivo utilizar a tecnologia Near Field Communication (NFC) para o controle de presenças, confira o <a href="http://pt.slideshare.net/marcielribeirotorres/controle-de-presenas-utilizando-nfc" target="_blank">artigo</a> na íntegra.
-O conteúdo desse repositório faz parte de um conjunto de três projetos que foram desenvolvidos para a disciplina de Trabalho de Conclusão de Curso para o Curso de Ciência da Computação (Bacharelado com ênfase em desenvolvimento de software). 
+O projeto de pesquisa em questão tem como objetivo utilizar a tecnologia Near Field Communication (NFC) para o controle de presenças, confira o <a href="http://pt.slideshare.net/marcielribeirotorres/controle-de-presenas-utilizando-nfc" target="_blank">artigo</a> na íntegra.
+O conteúdo desse repositório faz parte de um conjunto de três projetos que foram desenvolvidos para o Trabalho de Conclusão de Curso de Ciência da Computação (bacharelado com ênfase em desenvolvimento de software - Centro Universitário La Salle - Canoas, RS). 
  Veja o <a href="https://www.youtube.com/embed/86peaW43-_I" target="_blank">vídeo demonstrativo</a> do projeto.
 
 <h3>NFCProject.Webservice</h3>
