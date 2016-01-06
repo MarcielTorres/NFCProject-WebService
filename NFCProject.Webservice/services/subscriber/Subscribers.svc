@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="NFCProject.Webservice.services.subscriber.Subscribers" CodeBehind="Subscribers.svc.cs" %>

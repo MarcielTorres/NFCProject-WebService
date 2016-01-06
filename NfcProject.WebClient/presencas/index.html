@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Controle de Presenças - NFCProject</title>
+	<meta charset="utf-8" />
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="../assets/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <script>
+
+        var _host = "http://52.32.142.242/NFCProject/";
+        //var _host = "http://localhost:1241/";
+
+        function listAllPresences() {
+            $('table#tablePresences tr#trItems').remove();
+            $('#divLoader').show();
+
+            $.ajax({
+                type: "GET",
+                url: _host + "services/presences/Presence.svc/ListPresences",
+                contentType: "application/json;charset= ISO-8859-1",
+                dataType: 'jsonp',
+                success: function (data) {
+                    $('#divLoader').hide();
+                    var _resp = data.Presences;
+
+                    for (var i = 0; i < _resp.length; i++) {
+                        var newRow = $("<tr id='trItems'>");
+                        var cols = "";
+
+                        cols += '<td>' + _resp[i].ID + '</td>';
+                        cols += '<td>' + _resp[i].SubscriberName + '</td>';
+                        cols += '<td>' + _resp[i].EventName + '</td>';
+                        cols += '<td>' + _resp[i].PresenceDate + '</td>';
+                        cols += '<td><span onclick=\"RemovePresence(' + _resp[i].ID + ')\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" style=\"cursor:pointer;\"></span></td>';
+                        newRow.append(cols);
+                        $("#tablePresences").append(newRow);
+                    }
+
+                },
+                error: function (xhr) {
+                    $('#divLoader').hide();
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function RemovePresence(item) {
+
+            if (confirm('Deseja realmente remover esse registro?')) {
+                $.ajax({
+                    type: "GET",
+                    url: _host + "services/presences/Presence.svc/RemovePresence/" + item,
+                    contentType: "application/json;charset= ISO-8859-1",
+                    dataType: 'jsonp',
+                    success: function (data) {
+                        listAllPresences();
+
+                    },
+                    error: function (xhr) {
+                        alert('Erro ao executar método')
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+
+        }
+
+    </script>
+</head>
+<body onload="listAllPresences();">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../site/index.html">NFCProject</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../site/index.html">Home</a></li>
+                    <li><a href="../eventos/index.html">Eventos</a></li>
+                    <li><a href="../inscricoes/index.html">Inscrições</a></li>
+                    <li class="active"><a href="../presencas/index.html">Controle de Presença</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container theme-showcase" style="margin-top:25px;">
+        <div class="page-header">
+            <h1>Controle de Presenças</h1>
+        </div>
+
+        <table class="table table-striped" id="tablePresences">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Inscrito</th>
+                    <th>Evento</th>
+                    <th>Data da Presença</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div id="divLoader" style="text-align:center; padding:25px 0; display:none;">
+            <img src="../assets/img/ajax-loader.gif" />
+            <p>Aguarde...Carregando informações.</p>
+        </div>
+
+        <div style="clear:both;"></div>
+        <div class="pull-left"><button type="button" class="btn btn-lg btn-primary" onclick="listAllPresences();">Atualizar</button></div>
+        <div class="pull-right"><button type="button" class="btn btn-lg btn-success" onclick="document.location = '../presencas/create.html'">Confirmar Presença</button></div>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+</body>
+</html>

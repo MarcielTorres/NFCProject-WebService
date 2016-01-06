@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Nova Inscrição - Inscrições - NFCProject</title>
+	<meta charset="utf-8" />
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="../assets/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <script>
+
+        //var _host = "http://52.32.142.242/NFCProject/";
+        var _host = "http://localhost:1241/";
+
+        function LoadEvents() {
+
+            $.ajax({
+                type: "GET",
+                url: _host + "services/event/Events.svc/ListEvents",
+                contentType: "application/json;charset= ISO-8859-1",
+                dataType: 'jsonp',
+                success: function (data) {
+                    var _events = data.Events;
+
+                    for (var i = 0; i < _events.length; i++) {
+                        $('#txtEventID')
+                             .append($("<option></option>")
+                             .attr("value", _events[i].ID)
+                             .text(_events[i].Title));
+                    }
+
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                }
+            });            
+        }
+
+        function CreateSubscriber() {
+            var _uriTemplate = _host + "services/subscriber/Subscribers.svc/CreateSubscriber";
+
+            var Subscriber = {};
+            Subscriber.ID = '';
+            Subscriber.Name = $("#txtName").val();
+            Subscriber.Mail = $("#txtMail").val();
+            Subscriber.EventID = $("#txtEventID").val();
+
+            $.ajax({
+                type: "POST",
+                method: "POST",
+                data: JSON.stringify({ 'Model': Subscriber }),
+                processData: true,
+                url: _uriTemplate,
+                async: true,
+                contentType: "application/json;charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    alert('Inscrito inserido com sucesso');
+                    document.location = "../inscricoes/index.html";
+
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+
+
+        }
+
+    </script>
+
+</head>
+<body onload="LoadEvents()">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../site/index.html">NFCProject</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../site/index.html">Home</a></li>
+                    <li><a href="../eventos/index.html">Eventos</a></li>
+                    <li class="active"><a href="../inscricoes/index.html">Inscrições</a></li>
+                    <li><a href="../presencas/index.html">Controle de Presença</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    <div class="container theme-showcase" style="margin-top:25px;">
+        <div class="page-header">
+            <h1>Inscrições / Nova Inscrição</h1>
+        </div>
+
+        <table width="100%" cellpadding="2" cellspacing="2">
+            <tr>
+                <td width="35%" align="right"><p><b>Evento:</b>&nbsp;</p></td>
+                <td width="65%" align="left"><p>
+                    <select name="txtEventID" id="txtEventID" class="form-control" style="width:250px;">
+                        <option value="">Selecione um Evento</option>
+                    </select>
+               </td>
+            </tr>
+            <tr>
+                <td width="35%" align="right"><p><b>Nome:</b>&nbsp;</p></td>
+                <td width="65%" align="left"><p><input id="txtName" class="form-control" type="text" name="Name" style="width:250px;" /></p></td>
+            </tr>
+            <tr>
+                <td width="35%" align="right" valign="top"><p><b>E-mail:</b>&nbsp;</p></td>
+                <td width="65%" align="left"><p><input id="txtMail" class="form-control" type="text" name="Mail" style="width:250px;" /></p></td>
+            </tr>
+
+        </table>
+        
+        <div class="pull-right"><button type="button" class="btn btn-lg btn-success" onclick="CreateSubscriber();">Criar Inscrição</button></div>
+        
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+</body>
+</html>

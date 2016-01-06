@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Novo Evento - Eventos - NFCProject</title>
+	<meta charset="utf-8" />
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="../assets/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <script>
+
+        //var _host = "http://52.32.142.242/NFCProject/";
+        var _host = "http://localhost:1241/";
+
+        function CreateEvent() {
+            $('#divError').hide();
+            var _uriTemplate = _host + "services/event/Events.svc/CreateEvent";
+
+            var Event = {};
+            Event.ID = '';
+            Event.Title = $("#txtTitle").val();
+            Event.Description = $("#txtDescription").val();
+            Event.StartDate = $("#txtStartDate").val();
+            Event.EndDate = $("#txtEndDate").val();
+
+            //Efetua consistências
+            var obs = '';
+            obs += Event.Title == '' ? 'Informe o título do Evento<br>' : '';
+            obs += Event.Description == '' ? 'Informe a descrição do Evento<br>' : '';
+            obs += Event.StartDate == '' ? 'Informe a data de início do Evento<br>' : '';
+            obs += Event.EndDate == '' ? 'Informe a data final do Evento<br>' : '';
+
+            if (obs == '') {
+                $.ajax({
+                    type: "POST",
+                    method: "POST",
+                    data: JSON.stringify({ 'Model': Event }),
+                    processData: true,
+                    url: _uriTemplate,
+                    async: true,
+                    contentType: "application/json;charset=utf-8",
+                    dataType: 'json',
+                    success: function (data) {
+                        alert('Evento inserido com sucesso');
+                        document.location = "../eventos/index.html";
+
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+            else {
+                $('#divError').show();
+                $('#divError').html(obs);
+            }
+        }
+
+        function initForm() {
+            $("#txtStartDate").val(new Date().getDate() + '/' + new Date().getMonth() + '/' + new Date().getFullYear());
+            $("#txtEndDate").val(new Date().getDate() + '/' + new Date().getMonth() + '/' + new Date().getFullYear())
+        }
+
+    </script>
+
+</head>
+<body onload="initForm();">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../site/index.html">NFCProject</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../site/index.html">Home</a></li>
+                    <li class="active"><a href="../eventos/index.html">Eventos</a></li>
+                    <li><a href="../inscricoes/index.html">Inscrições</a></li>
+                    <li><a href="../presencas/index.html">Controle de Presença</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    <div class="container theme-showcase" style="margin-top:25px;">
+        <div class="page-header">
+            <h1>Eventos / Novo Evento</h1>
+        </div>
+        <div id="divError" class="alert alert-danger" role="alert" style="text-align:center;display:none;"></div>
+        <table width="100%" cellpadding="2" cellspacing="2">
+            <tr>
+                <td width="35%" align="right"><p><b>Título:</b>&nbsp;</p></td>
+                <td width="65%" align="left"><p><input required id="txtTitle" class="form-control" type="text" name="Titulo" style="width:250px;" /></p></td>
+            </tr>
+            <tr>
+                <td width="35%" align="right" valign="top"><p><b>Descrição:</b>&nbsp;</p></td>
+                <td width="65%" align="left"><p><textarea required id="txtDescription" style="width:250px; height:150px;" name="Descricao"></textarea></p></td>
+            </tr>
+            <tr>
+                <td width="35%" align="right"><p><b>Data Início:</b>&nbsp;</p></td>
+                <td width="65%" align="left"><p><input required id="txtStartDate" class="form-control" type="text" name="StartDate" style="width:250px;" /></p></td>
+            </tr>
+            <tr>
+                <td width="35%" align="right"><p><b>Data Fim:</b>&nbsp;</p></td>
+                <td width="65%" align="left"><p><input required id="txtEndDate" class="form-control" type="text" name="EndDate" style="width:250px;" /></p></td>
+            </tr>
+
+        </table>
+        
+        <div class="pull-right"><button type="button" class="btn btn-lg btn-success" onclick="CreateEvent();">Criar Evento</button></div>
+        
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+</body>
+</html>

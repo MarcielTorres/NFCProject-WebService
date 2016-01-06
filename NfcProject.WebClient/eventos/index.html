@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Eventos - NFCProject</title>
+	<meta charset="utf-8" />
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="../assets/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <script>
+
+        var _host = "http://52.32.142.242/NFCProject/";
+        //var _host = "http://localhost:1241/";
+
+        function listAllEvents() {
+            $('table#tableEvents tr#trItems').remove();
+            $('#divLoader').show();
+            $('#divError').hide();
+            
+            $.ajax({
+                type: "GET",
+                url: _host + "services/event/Events.svc/ListEvents",
+                contentType: "application/json;charset= ISO-8859-1",
+                dataType: 'jsonp',
+                success: function (data) {
+                    $('#divLoader').hide();
+
+                    if (data.Events) {
+                        var _events = data.Events;
+
+                        for (var i = 0; i < _events.length; i++) {
+                            var newRow = $("<tr id='trItems'>");
+                            var cols = "";
+
+                            cols += '<td>' + _events[i].ID + '</td>';
+                            cols += '<td>' + _events[i].Title + '</td>';
+                            cols += '<td>' + _events[i].Description + '</td>';
+                            cols += '<td align="center">' + _events[i].StartDate + '</td>';
+                            cols += '<td align="center">' + _events[i].EndDate + '</td>';
+                            cols += '<td align="center">' + _events[i].SubscribersNumber + '</td>';
+                            cols += '<td align="center">' + _events[i].SubscribersPresences + '</td>';
+                            cols += '<td><span onclick=\"RemoveEvent(' + _events[i].ID + ')\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" style=\"cursor:pointer;\"></span></td>';
+                            newRow.append(cols);
+                            $("#tableEvents").append(newRow);
+
+                        }
+                    }
+                    else {
+                        $('#divError').show();
+                        $('#divError').html('Erro ao efetuar comunicação com o serviço');
+                    }
+                    
+
+                },
+                error: function (xhr) {
+                    $('#divLoader').hide();
+                    $('#divError').show();
+                    $('#divError').html('Erro ao efetuar comunicação com o serviço');
+                    console.log(xhr.responseText);
+                }
+                
+            });
+        }
+
+        function RemoveEvent(item) {
+
+            if (confirm('Deseja realmente remover esse registro?')) {
+                $.ajax({
+                    type: "GET",
+                    url: _host + "services/event/Events.svc/RemoveEvent/" + item,
+                    contentType: "application/json;charset= ISO-8859-1",
+                    dataType: 'jsonp',
+                    success: function (data) {
+                        listAllEvents();
+
+                    },
+                    error: function (xhr) {
+                        alert('Erro ao executar método')
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+
+        }
+
+    </script>
+
+</head>
+<body onload="listAllEvents();">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../site/index.html">NFCProject</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../site/index.html">Home</a></li>
+                    <li class="active"><a href="../eventos/index.html">Eventos</a></li>
+                    <li><a href="../inscricoes/index.html">Inscrições</a></li>
+                    <li><a href="../presencas/index.html">Controle de Presença</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    <div class="container theme-showcase" style="margin-top:25px;">
+        <div class="page-header">
+            <h1>Eventos</h1>
+        </div>
+
+        <div id="divError" class="alert alert-danger" role="alert" style="text-align:center;display:none;"></div>
+
+        <table class="table table-striped" id="tableEvents">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th style="text-align:center;">Data Início</th>
+                    <th style="text-align:center;">Data Final</th>
+                    <th style="text-align:center;">Nº Inscritos</th>
+                    <th style="text-align:center;">Nº Confirmados</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+        <div id="divLoader" style="text-align:center; padding:25px 0; display:none;">
+            <img src="../assets/img/ajax-loader.gif" />
+            <p>Aguarde...Carregando informações.</p>
+        </div>
+        
+        <div style="clear:both;"></div>
+        <div class="pull-left"><button type="button" class="btn btn-lg btn-primary" onclick="listAllEvents();">Atualizar</button></div>
+        <div class="pull-right"><button type="button" class="btn btn-lg btn-success" onclick="document.location = '../eventos/create.html'">Novo Evento</button></div>
+        
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+</body>
+</html>

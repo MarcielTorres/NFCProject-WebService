@@ -1,0 +1,13 @@
+﻿
+VALIDAÇÕES
+==========
+
+- Adicionar Inscrições
+	- Não permitir campos brancos
+	- Não permitir mesmo email para o mesmo eventoitad
+	- validar email (sintaxe)
+
+- Confirmação de Presença
+	- Não permitir campos brancos
+	- Validar email (sintaxe)
+	- Não permitir conformar presença mais de uma vez para o mesmo evento
