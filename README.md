@@ -14,3 +14,7 @@ Para o desenvolvimento desse projeto foram utilizados recurso da plataforma WCF 
 Para visualização das informações contidas no projeto foi necessário o desenvolvimento de uma interface web.
 Esse projeto foi desenvolvido utilizando apenas recursos de HTML/CSS/JS para o consumo do próprio webservice.
 
+<h3>Escopo do Projeto</h3>
+<img src="https://s3.amazonaws.com/nfcproject/images/Projeto-NFC-Marciel-Torres.jpg" border="0">
+ 
+
