@@ -31,7 +31,6 @@ using System.Configuration;
 // -> GenerateID: Gera ID aleatório com relação a tabela já existente.
 // Observações
 // -> Classe otimizada exclusivamente para utilização da base MSSQLServer.
-// -> Classe otimizada exclusivamente para o projeto Construtiva - WebServices.
 //--------------------------------------------------------------------------------------
 namespace NFCProject.Webservice.helpers.storages
 {
